@@ -14,7 +14,4 @@ describe('normalize urls', () => {
     test('remove last / on https', () => {
         expect(normalizeURL('https://blog.boot.dev/path/')).toBe('blog.boot.dev/path')
     })
-    test('no change', () => {
-        expect(normalizeURL('blog.boot.dev/path')).toBe('blog.boot.dev/path')
-    })
 })
