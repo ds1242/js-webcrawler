@@ -17,7 +17,7 @@ function getURLsFromHTML(htmlBody, baseURL) {
     let anchorArr = dom.window.document.querySelectorAll('a')
     let hrefArr = [] 
     for (let i = 0; i < anchorArr.length; i++) {
-        if (anchorArr[i].href.slice(0, baseURL.length - 1) === baseURL) {
+        if (anchorArr[i].href.slice(0, baseURL.length) === baseURL) {
             hrefArr.push(normalizeURL(anchorArr[i].href))
         } else {
             let stringToAdd = `${baseURL}${anchorArr[i].href}`

@@ -56,4 +56,28 @@ describe('getURLsFromHTML', () => {
         const expected = ['blog.boot.dev/home', 'blog.boot.dev/home']
         expect(actual).toEqual(expected)
     })
+    test('deeper html check', () => {
+        let htmlBody = `
+        <html>
+            <body>
+                <a href="/home"><span>Go to Boot.dev</span></a>
+                <h1>Title of Page</h1>
+                <p> blah blah blah lots of stuff goes here </p>
+                <p> blah blah blah lots of stuff goes here </p>
+                <p> blah blah blah lots of stuff goes here </p>
+                <h2> sub heading </h2> 
+                <a href="https://blog.boot.dev/home"><span>Go to Boot.dev</span></a>
+                <p> blah blah blah lots of stuff goes here </p>
+                <p> blah blah blah lots of stuff goes here </p>
+                <p> blah blah blah lots of stuff goes here </p>
+                <h2> sub heading 2</h2> 
+                <a href="/checkanotherpage"><span>Go to Boot.dev</span></a>
+            </body>
+        </html>
+        `
+        let url = 'https://blog.boot.dev'
+        const actual = getURLsFromHTML(htmlBody, url)
+        const expected = ['blog.boot.dev/home', 'blog.boot.dev/home', `blog.boot.dev/checkanotherpage`]
+        expect(actual).toEqual(expected)
+    })
 })
