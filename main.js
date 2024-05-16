@@ -12,7 +12,7 @@ function main() {
     }
     
     let baseURL = argv[2]
-    console.log(`Using ${baseURL} as the base URL`)
+    console.log(`Using ${baseURL} as the base URL for crawl...`)
 
 }
 
