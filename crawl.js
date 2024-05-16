@@ -9,6 +9,4 @@ function normalizeURL(urlToParse) {
 }
 
 
-let testURL = 'https://blog.boot.dev/path/'
-normalizeURL(testURL)
 export { normalizeURL }
