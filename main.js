@@ -10,8 +10,10 @@ function main() {
         console.error('Please enter a URL');
         return;
     }
-    let array = getURLsFromHTML(argv[2])
-    console.log(array)
+    
+    let baseURL = argv[3]
+    console.log(`Using ${baseURL} as the base URL`)
+
 }
 
 main()
