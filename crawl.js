@@ -15,24 +15,18 @@ function normalizeURL(urlToParse) {
 function getURLsFromHTML(htmlBody, baseURL) {
     const dom = new JSDOM(htmlBody)
     let anchorArr = dom.window.document.querySelectorAll('a')
+    let hrefArr = [] 
     for (let i = 0; i < anchorArr.length; i++) {
-        
-        
+        if (anchorArr[i].href.slice(0, baseURL.length - 1) === baseURL) {
+            hrefArr.push(normalizeURL(anchorArr[i].href))
+        } else {
+            let stringToAdd = `${baseURL}${anchorArr[i].href}`
+            hrefArr.push(normalizeURL(stringToAdd))
+        }
     }
-    return anchorArr
+    return hrefArr
 }
 
 
-let htmlTest = `
-<html>
-    <body>
-        <a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a>
-        <a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a>
-    </body>
-</html>
-`
-let url = `https://blog.boot.dev`
-
-getURLsFromHTML(htmlTest, url)
 
 export { normalizeURL, getURLsFromHTML }
