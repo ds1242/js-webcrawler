@@ -29,5 +29,29 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return hrefArr
 }
 
+async function crawlPage(currentURL) {
+    try {
+        const response = await fetch(currentURL, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'text/html'
+            }
+        })
+        if (response.status >= 400) {
+            console.error('Error getting that page');
+            return;
+        }
+        if(!response.headers.get("Content-Type").includes('text/html')) {
+            console.error('Not text/html');
+            return;
+        }
+        // console.log(response)
+        console.log(JSON.stringify(response))
+    } catch (error) {
+        console.error('Error getting that page');
+    }
+}
 
+crawlPage('https://wagslane.dev')
 export { normalizeURL, getURLsFromHTML }
