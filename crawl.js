@@ -24,17 +24,10 @@ function getURLsFromHTML(htmlBody, baseURL) {
             } catch (error) {
                 console.log(`${error.message}: ${anchorArr[i]}`)
             }
-            // if (anchorArr[i].href.slice(0, baseURL.length) === baseURL) {
-            //     hrefArr.push(normalizeURL(anchorArr[i].href))
-            // } else {
-            //     let stringToAdd = `${baseURL}${anchorArr[i].href}`
-            //     hrefArr.push(normalizeURL(stringToAdd))
-            // }
         }
     }
     return hrefArr
 }
-
 
 
 export { normalizeURL, getURLsFromHTML }
