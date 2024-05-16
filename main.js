@@ -11,7 +11,7 @@ function main() {
         return;
     }
     
-    let baseURL = argv[3]
+    let baseURL = argv[2]
     console.log(`Using ${baseURL} as the base URL`)
 
 }
