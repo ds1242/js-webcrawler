@@ -29,21 +29,21 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return hrefArr
 }
 
-async function crawlPage(baseURL, currentURL=baseURL, pages={}) {
+async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
     let base = new URL(baseURL)
     let current = new URL(currentURL)
     if(base.hostname !== current.hostname) {
         return pages
     }
     let normalizedCurrent = normalizeURL(currentURL)
-    if (Object.values(pages).includes(normalizedURL)) {
+    if (Object.values(pages).includes(normalizedCurrent)) {
         pages[normalizedCurrent] = pages[normalizedCurrent]++
     } else {
         pages[normalizedCurrent] = 0
     }
     let newURLs = fetchCurrent(normalizedCurrent)
-    for (url of newURLs) {
-        crawlPage(baseURL, url, pages)
+    for (let url of newURLs) {
+        await crawlPage(baseURL, url, pages)
     }
     return pages
 }

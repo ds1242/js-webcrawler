@@ -14,7 +14,7 @@ async function main() {
     let baseURL = argv[2]
     console.log(`Using ${baseURL} as the base URL for crawl...`)
     try {
-        await crawlPage(baseURL, pages)
+        await crawlPage(baseURL)
     } catch(err) {
         console.log(`${err} unable to crawl page`)
     }
