@@ -30,27 +30,29 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 async function crawlPage(currentURL) {
+    let response
     try {
-        const response = await fetch(currentURL, {
+        response = await fetch(currentURL, {
             method: 'GET',
             mode: 'cors',
             headers: {
                 'Content-Type': 'text/html'
             }
         })
-        if (response.status >= 400) {
-            console.error('Error getting that page');
-            return;
-        }
-        if(!response.headers.get("Content-Type").includes('text/html')) {
-            console.error('Not text/html');
-            return;
-        }
-        const responseBody = await response.text()
-        console.log(responseBody)
     } catch (error) {
         console.error('Error getting that page');
     }
+    if (response.status >= 400) {
+        console.error(`HTTP Error: ${response.status} getting that page`);
+        return;
+    }
+    const contentType = response.headers.get("Content-Type")
+    if(!contentType || !contentType.includes('text/html')) {
+        console.error('Not text/html response');
+        return;
+    }
+    const responseBody = await response.text()
+    console.log(responseBody)
 }
 
 export { normalizeURL, getURLsFromHTML, crawlPage }
