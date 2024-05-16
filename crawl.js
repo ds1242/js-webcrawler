@@ -30,5 +30,4 @@ function getURLsFromHTML(htmlBody, baseURL) {
 }
 
 
-
 export { normalizeURL, getURLsFromHTML }
