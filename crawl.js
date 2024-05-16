@@ -14,8 +14,7 @@ function normalizeURL(urlToParse) {
 
 function getURLsFromHTML(htmlBody, baseURL) {
     const dom = new JSDOM(htmlBody)
-    let anchorArr = []
-    anchorArr = dom.window.document.querySelectorAll('a')
+    let anchorArr = dom.window.document.querySelectorAll('a')
     for (let i = 0; i < anchorArr.length; i++) {
         
         
