@@ -1,5 +1,5 @@
 import { argv } from'node:process'
-import { normalizeURL, getURLsFromHTML } from "./crawl.js"
+import { normalizeURL, getURLsFromHTML, crawlPage } from "./crawl.js"
 
 function main() {
     if (argv.length >= 4) {
@@ -13,6 +13,7 @@ function main() {
     
     let baseURL = argv[2]
     console.log(`Using ${baseURL} as the base URL for crawl...`)
+    crawlPage(baseURL)
 
 }
 

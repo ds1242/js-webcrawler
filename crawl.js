@@ -46,12 +46,11 @@ async function crawlPage(currentURL) {
             console.error('Not text/html');
             return;
         }
-        // console.log(response)
-        console.log(JSON.stringify(response))
+        const responseBody = await response.text()
+        console.log(responseBody)
     } catch (error) {
         console.error('Error getting that page');
     }
 }
 
-crawlPage('https://wagslane.dev')
-export { normalizeURL, getURLsFromHTML }
+export { normalizeURL, getURLsFromHTML, crawlPage }
