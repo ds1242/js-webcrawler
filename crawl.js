@@ -29,7 +29,26 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return hrefArr
 }
 
-async function crawlPage(currentURL) {
+async function crawlPage(baseURL, currentURL=baseURL, pages={}) {
+    let base = new URL(baseURL)
+    let current = new URL(currentURL)
+    if(base.hostname !== current.hostname) {
+        return pages
+    }
+    let normalizedCurrent = normalizeURL(currentURL)
+    if (Object.values(pages).includes(normalizedURL)) {
+        pages[normalizedCurrent] = pages[normalizedCurrent]++
+    } else {
+        pages[normalizedCurrent] = 0
+    }
+    let newURLs = fetchCurrent(normalizedCurrent)
+    for (url of newURLs) {
+        crawlPage(baseURL, url, pages)
+    }
+    return pages
+}
+
+async function fetchCurrent(currentURL) {
     let response
     try {
         response = await fetch(currentURL, {
@@ -52,7 +71,7 @@ async function crawlPage(currentURL) {
         return;
     }
     const responseBody = await response.text()
-    console.log(responseBody)
+    return responseBody
 }
 
 export { normalizeURL, getURLsFromHTML, crawlPage }
