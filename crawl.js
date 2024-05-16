@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 
+
 function normalizeURL(urlToParse) {
     const myURL = new URL(urlToParse)
     let pathname = myURL.pathname
@@ -15,7 +16,10 @@ function getURLsFromHTML(htmlBody, baseURL) {
     const dom = new JSDOM(htmlBody)
     let anchorArr = []
     anchorArr = dom.window.document.querySelectorAll('a')
-    console.log(dom.window.document.querySelectorAll('a'))
+    for (let i = 0; i < anchorArr.length; i++) {
+        
+        
+    }
     return anchorArr
 }
 
@@ -23,6 +27,7 @@ function getURLsFromHTML(htmlBody, baseURL) {
 let htmlTest = `
 <html>
     <body>
+        <a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a>
         <a href="https://blog.boot.dev"><span>Go to Boot.dev</span></a>
     </body>
 </html>
