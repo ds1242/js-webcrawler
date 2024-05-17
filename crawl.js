@@ -32,26 +32,31 @@ function getURLsFromHTML(htmlBody, baseURL) {
 async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
     let base = new URL(baseURL)
     let current = new URL(currentURL)
-    if(base.hostname !== current.hostname) {
+    if(base.host !== current.host) {
         return pages
     }
+
     let normalizedCurrent = normalizeURL(currentURL)
-    if (Object.values(pages).includes(normalizedCurrent)) {
-        pages[normalizedCurrent] = pages[normalizedCurrent]++
+
+    if (pages[normalizedCurrent]) {        
+        pages[normalizedCurrent] += 1
+        return pages
     } else {
-        pages[normalizedCurrent] = 0
+        pages[normalizedCurrent] = 1
     }
-    let newURLs = fetchCurrent(normalizedCurrent)
-    for (let url of newURLs) {
-        await crawlPage(baseURL, url, pages)
-    }
+
+    let htmlBody = await fetchCurrent(currentURL)
+    let newURLs = getURLsFromHTML(htmlBody, currentURL)
+    for (const url of newURLs) {
+        pages = await crawlPage(baseURL, url, pages)
+    }    
     return pages
 }
 
 async function fetchCurrent(currentURL) {
     let response
     try {
-        response = await fetch(currentURL, {
+        response = await fetch(`${currentURL}`, {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -59,15 +64,15 @@ async function fetchCurrent(currentURL) {
             }
         })
     } catch (error) {
-        console.error('Error getting that page');
+        throw new Error(`Got Network error: ${error.message}`)
     }
-    if (response.status >= 400) {
-        console.error(`HTTP Error: ${response.status} getting that page`);
+    if (response.status > 399) {
+        console.log(`Got HTTP error: ${res.status} ${res.statusText}`)
         return;
     }
     const contentType = response.headers.get("Content-Type")
     if(!contentType || !contentType.includes('text/html')) {
-        console.error('Not text/html response');
+        console.error(`Not text/html response ${contentType}`);
         return;
     }
     const responseBody = await response.text()
