@@ -45,7 +45,7 @@ async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
         pages[normalizedCurrent] = 1
     }
 
-    let htmlBody = await fetchCurrent(currentURL)
+    let htmlBody = await fetchHTML(currentURL)
     let newURLs = getURLsFromHTML(htmlBody, currentURL)
     for (const url of newURLs) {
         pages = await crawlPage(baseURL, url, pages)
@@ -53,7 +53,7 @@ async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
     return pages
 }
 
-async function fetchCurrent(currentURL) {
+async function fetchHTML(currentURL) {
     let response
     try {
         response = await fetch(`${currentURL}`, {
