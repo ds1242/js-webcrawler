@@ -45,8 +45,9 @@ async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
         pages[normalizedCurrent] = 1
     }
     console.log(`Crawling ${currentURL}`)
+    let htmlBody
     try {
-        let htmlBody = await fetchHTML(currentURL)
+        htmlBody = await fetchHTML(currentURL)
     } catch (error) {
         console.log(`${error.message}`)   
         return pages     
