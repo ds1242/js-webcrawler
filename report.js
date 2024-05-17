@@ -3,7 +3,10 @@
 function printReport(pages) {
     console.log(`Generating Report`);
     const pagesArr = sortPagesObj(pages)
-    
+    for (let i = 0; i < pagesArr.length; i++) {
+        const element = pagesArr[i];
+        console.log(`Found ${element.count} internal links to ${element.url}`)
+    }
 
 }
 
@@ -17,6 +20,7 @@ function sortPagesObj(pages) {
         }
     }
     outputArr.sort((a, b) => b.count - a.count)
+    return outputArr
 }
 
 export { printReport }
