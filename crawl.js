@@ -38,15 +38,20 @@ async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
 
     let normalizedCurrent = normalizeURL(currentURL)
 
-    if (pages[normalizedCurrent]) {        
-        pages[normalizedCurrent] += 1
+    if (pages[normalizedCurrent] > 0) {        
+        pages[normalizedCurrent]++
         return pages
     } else {
         pages[normalizedCurrent] = 1
     }
-
-    let htmlBody = await fetchHTML(currentURL)
-    let newURLs = getURLsFromHTML(htmlBody, currentURL)
+    console.log(`Crawling ${currentURL}`)
+    try {
+        let htmlBody = await fetchHTML(currentURL)
+    } catch (error) {
+        console.log(`${error.message}`)   
+        return pages     
+    }
+    let newURLs = getURLsFromHTML(htmlBody, baseURL)
     for (const url of newURLs) {
         pages = await crawlPage(baseURL, url, pages)
     }    
