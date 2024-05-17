@@ -1,5 +1,6 @@
 import { argv } from'node:process'
 import { normalizeURL, getURLsFromHTML, crawlPage } from "./crawl.js"
+import { printReport } from './report.js'
 
 async function main() {
     if (argv.length >= 4) {
@@ -18,7 +19,7 @@ async function main() {
     } catch(err) {
         console.log(`${err} unable to crawl page`)
     }
-    console.log(pages)
+    printReport(pages)
 }
 
 main()
