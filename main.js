@@ -1,7 +1,7 @@
 import { argv } from'node:process'
-import { normalizeURL, getURLsFromHTML } from "./crawl.js"
+import { normalizeURL, getURLsFromHTML, crawlPage } from "./crawl.js"
 
-function main() {
+async function main() {
     if (argv.length >= 4) {
         console.error('Too Many Arugments');
         return;
@@ -10,10 +10,15 @@ function main() {
         console.error('Please enter a URL');
         return;
     }
-    
+    let pages = {}
     let baseURL = argv[2]
     console.log(`Using ${baseURL} as the base URL for crawl...`)
-
+    try {
+        pages = await crawlPage(baseURL, baseURL, pages)
+    } catch(err) {
+        console.log(`${err} unable to crawl page`)
+    }
+    console.log(pages)
 }
 
 main()

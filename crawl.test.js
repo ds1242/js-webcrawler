@@ -14,18 +14,34 @@ describe('normalize urls', () => {
     test('remove last / on https', () => {
         expect(normalizeURL('https://blog.boot.dev/path/')).toBe('blog.boot.dev/path')
     })
-    test('normalizeURL http', () => {
-        const input = 'http://BLOG.boot.dev/path'
+    test('normalizeURL protocol', () => {
+        const input = 'https://blog.boot.dev/path'
         const actual = normalizeURL(input)
         const expected = 'blog.boot.dev/path'
         expect(actual).toEqual(expected)
-    })
-    test('normalizeURL capitals', () => {
+      })
+      
+      test('normalizeURL slash', () => {
+        const input = 'https://blog.boot.dev/path/'
+        const actual = normalizeURL(input)
+        const expected = 'blog.boot.dev/path'
+        expect(actual).toEqual(expected)
+      })
+      
+      test('normalizeURL capitals', () => {
         const input = 'https://BLOG.boot.dev/path'
         const actual = normalizeURL(input)
         const expected = 'blog.boot.dev/path'
         expect(actual).toEqual(expected)
-    })
+      })
+      
+      test('normalizeURL http', () => {
+        const input = 'http://BLOG.boot.dev/path'
+        const actual = normalizeURL(input)
+        const expected = 'blog.boot.dev/path'
+        expect(actual).toEqual(expected)
+      })
+    
 })
 
 describe('getURLsFromHTML', () => {
@@ -94,4 +110,11 @@ describe('getURLsFromHTML', () => {
         const expected = ['https://blog.boot.dev/path/one']
         expect(actual).toEqual(expected)
     })
+    test('getURLsFromHTML absolute', () => {
+        const inputURL = 'https://blog.boot.dev'
+        const inputBody = '<html><body><a href="https://blog.boot.dev"><span>Boot.dev></span></a></body></html>'
+        const actual = getURLsFromHTML(inputBody, inputURL)
+        const expected = [ 'https://blog.boot.dev/' ]
+        expect(actual).toEqual(expected)
+      })
 })

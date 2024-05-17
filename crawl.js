@@ -29,5 +29,60 @@ function getURLsFromHTML(htmlBody, baseURL) {
     return hrefArr
 }
 
+async function crawlPage(baseURL, currentURL = baseURL, pages = {}) {
+    let base = new URL(baseURL)
+    let current = new URL(currentURL)
+    if(base.host !== current.host) {
+        return pages
+    }
 
-export { normalizeURL, getURLsFromHTML }
+    let normalizedCurrent = normalizeURL(currentURL)
+
+    if (pages[normalizedCurrent] > 0) {        
+        pages[normalizedCurrent]++
+        return pages
+    } else {
+        pages[normalizedCurrent] = 1
+    }
+    console.log(`Crawling ${currentURL}`)
+    let htmlBody
+    try {
+        htmlBody = await fetchHTML(currentURL)
+    } catch (error) {
+        console.log(`${error.message}`)   
+        return pages     
+    }
+    let newURLs = getURLsFromHTML(htmlBody, baseURL)
+    for (const url of newURLs) {
+        pages = await crawlPage(baseURL, url, pages)
+    }    
+    return pages
+}
+
+async function fetchHTML(currentURL) {
+    let response
+    try {
+        response = await fetch(`${currentURL}`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'text/html'
+            }
+        })
+    } catch (error) {
+        throw new Error(`Got Network error: ${error.message}`)
+    }
+    if (response.status > 399) {
+        console.log(`Got HTTP error: ${res.status} ${res.statusText}`)
+        return;
+    }
+    const contentType = response.headers.get("Content-Type")
+    if(!contentType || !contentType.includes('text/html')) {
+        console.error(`Not text/html response ${contentType}`);
+        return;
+    }
+    const responseBody = await response.text()
+    return responseBody
+}
+
+export { normalizeURL, getURLsFromHTML, crawlPage }
